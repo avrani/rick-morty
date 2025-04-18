@@ -1,0 +1,16 @@
+<input type="text" [(ngModel)]="charecterName" placeholder="Episode by name" (ngModelChange)="filter()">
+<div class="main-list">
+    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+        [infiniteScrollContainer]="'.main-list'" [fromRoot]="true" (scrolled)="onScroll()"></div>
+    <table>
+        <tr>
+            <th>Episode Name</th>
+            <th>Air Date</th>
+        </tr>
+        <tr *ngFor="let episode of episodes">
+            <td>{{episode.name}}</td>
+            <td>{{episode.air_date}}</td>
+        </tr>
+    </table>
+   
+</div>

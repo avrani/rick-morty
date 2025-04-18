@@ -1,0 +1,40 @@
+<button (click)="isGrid=!isGrid">toggle</button>
+<button [routerLink]="['/episode']">Episode Page</button>
+<input type="text" [(ngModel)]="charecterName" placeholder="Charecter name" (ngModelChange)="filter()">
+
+<select [(ngModel)]="selectedStatus" (ngModelChange)="filter()">
+    <option *ngFor="let status of statuses" [value]="status">
+        {{ status }}
+    </option>
+</select>
+
+@if(isGrid){
+<div class="main-panel">
+    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+        [infiniteScrollContainer]="'.main-panel'" [fromRoot]="true" (scrolled)="onScroll()"></div>
+    @for(charecter of results;track charecter.id){
+    <app-card [charecter]="charecter"></app-card>
+    }
+</div>
+}@else{
+
+<div class="main-list">
+    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
+        [infiniteScrollContainer]="'.main-list'" [fromRoot]="true" (scrolled)="onScroll()"></div>
+    <table>
+        <tr>
+            @for(item of columns;track item){
+            <th>{{item.label}}</th>
+            }
+        </tr>
+
+        @for(charecter of results;track charecter.id){
+        <tr [routerLink]="['/details', charecter.id]">
+            @for(item of columns;track item){
+            <td>{{charecter[item.key]}}</td>
+            }
+        </tr>
+        }
+    </table>
+</div>
+}

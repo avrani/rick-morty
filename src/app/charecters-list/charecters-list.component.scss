@@ -1,0 +1,38 @@
+.main-panel {
+    height: 90vh;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+
+}
+
+@media screen and (min-width: 500px) {
+    .main-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+
+table,
+td,
+th {
+    border: 1px solid;
+    padding: 4px;
+}
+td{
+    text-align: center;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+   
+}
+
+.main-list {
+    height: 80vh;
+    overflow-y: scroll;
+}

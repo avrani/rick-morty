@@ -1,0 +1,19 @@
+:host {
+    cursor: pointer;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+img{
+    width: 100%;
+}
+
+@media screen and (min-width: 500px) {
+    :host {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+}
+
+p {
+    text-align: center;
+}
