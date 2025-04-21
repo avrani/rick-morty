@@ -7,7 +7,7 @@
             <th>Episode Name</th>
             <th>Air Date</th>
         </tr>
-        <tr *ngFor="let episode of episodes">
+        <tr *ngFor="let episode of episodes()">
             <td>{{episode.name}}</td>
             <td>{{episode.air_date}}</td>
         </tr>

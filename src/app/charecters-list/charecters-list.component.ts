@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Response, Info } from '../shared/models/models';
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 export class CharectersListComponent {
   apiService = inject(ApiService);
   cdr = inject(ChangeDetectorRef);
-  charecterName: string = '';
+  charecterName = signal('')
 
   statuses = ['Alive', 'Dead', 'unknown'];
 
@@ -34,13 +34,19 @@ export class CharectersListComponent {
   selectedStatus: string = 'Alive';
   isGrid: boolean = true;
 
-  results: any[] = [];
+  results = signal<any>('');
   page: number = 1;
   nextPageExist: boolean = true;
 
+  updateCharecterName(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.charecterName.set(input.value);
+  }
+
+
   filter() {
     this.page = 1;
-    this.results = [];
+    this.results.set([])
     this.nextPageExist = true;
     this.getCharacters();
   }
@@ -56,10 +62,9 @@ export class CharectersListComponent {
 
   getCharacters() {
     if (!this.nextPageExist) return;
-    this.apiService.getCharacters(this.page, this.charecterName, this.selectedStatus).subscribe((res: Response) => {
-      this.results = [...this.results, ...res.results];
+    this.apiService.getCharacters(this.page, this.charecterName(), this.selectedStatus).subscribe((res: Response) => {
+      this.results.update(val => [...val, ...res.results]);
       this.nextPageExist = res.info.next ? true : false;
-      this.cdr.detectChanges()
     })
   }
 

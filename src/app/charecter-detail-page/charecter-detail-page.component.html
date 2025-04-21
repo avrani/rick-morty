@@ -1,9 +1,6 @@
 <div>
-    @if(charecterDetails$ | async; as charecterDetails){
-    <h1>{{charecterDetails.name}}</h1>
-    <img [src]="charecterDetails.image">
-    }@else{
-    please wait...
-    }
-
+    
+    <h1>{{charecterDetails().name}}</h1>
+    <img [src]="charecterDetails().image">
+   
 </div>

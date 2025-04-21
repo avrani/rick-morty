@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../shared/services/api.service';
 import { EpisodesResponse, Episode } from '../shared/models/models';
 import { CommonModule } from '@angular/common';
@@ -11,9 +11,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './episode-page.component.scss'
 })
 export class EpisodePageComponent {
-  charecterName: string = '';
+  charecterName = signal('')
   private readonly apiService = inject(ApiService);
-  episodes: any = [];
+  episodes=signal<any>('')
   nextPageExist: boolean = true;
   page: number = 1;
 
@@ -21,8 +21,13 @@ export class EpisodePageComponent {
     this.getEpisodes();
   }
 
+  updateCharecterName(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.charecterName.set(input.value);
+  }
+
   filter() {
-    this.episodes = [];
+    this.episodes.set([])
     this.page = 1;
     this.nextPageExist = true;
     this.getEpisodes();
@@ -36,8 +41,8 @@ export class EpisodePageComponent {
 
   getEpisodes() {
     if (!this.nextPageExist) return;
-    this.apiService.getEpisodes(this.page, this.charecterName).subscribe((res: any) => {
-      this.episodes = [...this.episodes, ...res.results];
+    this.apiService.getEpisodes(this.page, this.charecterName()).subscribe((res: any) => {
+      this.episodes.update(val => [...val, ...res.results]);
       this.nextPageExist = res.info.next ? true : false;
     })
   }

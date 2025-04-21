@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../shared/services/api.service';
 import { AsyncPipe } from '@angular/common';
@@ -14,12 +14,14 @@ export class CharecterDetailPageComponent {
 
   private readonly route = inject(ActivatedRoute);
   private readonly apiService = inject(ApiService);
+  charecterDetails = signal<any>('')
 
-  charecterDetails$: Observable<any> = new Observable();
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.charecterDetails$ = this.apiService.getCharacterById(Number(params.get('id')));
+      this.apiService.getCharacterById(Number(params.get('id'))).subscribe(res => {
+        this.charecterDetails.set(res);
+      })
     });
   }
 }

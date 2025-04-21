@@ -1,6 +1,6 @@
 <button (click)="isGrid=!isGrid">toggle</button>
 <button [routerLink]="['/episode']">Episode Page</button>
-<input type="text" [(ngModel)]="charecterName" placeholder="Charecter name" (ngModelChange)="filter()">
+<input type="text" [value]="charecterName()" (input)="updateCharecterName($event);filter()" placeholder="Charecter name">
 
 <select [(ngModel)]="selectedStatus" (ngModelChange)="filter()">
     <option *ngFor="let status of statuses" [value]="status">
@@ -12,7 +12,7 @@
 <div class="main-panel">
     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollThrottle]="50"
         [infiniteScrollContainer]="'.main-panel'" [fromRoot]="true" (scrolled)="onScroll()"></div>
-    @for(charecter of results;track charecter.id){
+    @for(charecter of results();track charecter.id){
     <app-card [charecter]="charecter"></app-card>
     }
 </div>
@@ -28,7 +28,7 @@
             }
         </tr>
 
-        @for(charecter of results;track charecter.id){
+        @for(charecter of results();track charecter.id){
         <tr [routerLink]="['/details', charecter.id]">
             @for(item of columns;track item){
             <td>{{charecter[item.key]}}</td>
